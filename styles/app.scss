@@ -1,0 +1,455 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Roboto:wght@100;300;400;500;900&display=swap");
+@import "./header.scss";
+
+// Colors & Variables
+$primary-color: #007bff;
+$secondary-color: #0056b3;
+$text-color: #ffffff;
+$background: linear-gradient(135deg, #007bff, #0056b3);
+$button-color: #ff4d4d;
+$border-radius: 5px;
+$completed-bg: #d4edda;
+$completed-text: #155724;
+
+// Global Styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background: $background;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 70px; // Adjust based on the height of the navbar
+}
+
+// App Container - Ensures both AddTodoForm and Todos appear sequentially
+.add-todo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; // Align to the left
+  width: 100%;
+  max-width: 1400px; // Increased width
+  padding: 2rem;
+}
+
+// Navigation Styles
+.navbar {
+  background-color: $primary-color;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+
+  .logo h2 {
+    color: $text-color;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+
+    li {
+      a {
+        color: $text-color;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease-in-out;
+
+        &:hover {
+          color: $secondary-color;
+        }
+      }
+    }
+  }
+}
+
+// Buttons
+.btn {
+  background-color: $primary-color;
+  color: $text-color;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  transition: background 0.3s ease-in-out;
+
+  &.logout, &.delete {
+    background-color: $button-color;
+  }
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+// Home Page
+.home {
+  text-align: center;
+
+  .heading {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding-top: 10vmax;
+  }
+
+  p {
+    margin: 2rem 0;
+    font-weight: 900;
+  }
+}
+
+// Todos Container - Appears after AddTodoForm
+.todos-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px; // Equal width
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+// Todo Card
+.todo {
+  background-color: $text-color;
+  border-radius: $border-radius;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &.completed {
+    background-color: yellow; // Change background color to yellow when completed
+  }
+
+  .todo-details {
+    flex-grow: 1;
+    padding-right: 1rem; // Add some space inside the task details
+
+    h3 {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 0.5rem; // Add some space between title and description
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.3rem;
+      margin-bottom: 0.5rem; // Add some space between paragraphs
+    }
+  }
+
+  .todo-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    .edit-btn {
+      background-color: #28a745;
+      color: $text-color;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: $border-radius;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+      font-size: 1rem; // Make the size of the edit button like the delete button
+
+      &:hover {
+        background-color: darken(#28a745, 10%);
+      }
+    }
+
+    .delete-btn {
+      background-color: $button-color;
+      color: $text-color;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: $border-radius;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+      font-size: 1rem; // Ensure the size of the delete button is consistent
+
+      &:hover {
+        background-color: darken($button-color, 10%);
+      }
+    }
+  }
+
+  // Inline Edit Form
+  .edit-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      transition: border 0.3s ease-in-out;
+
+      &:focus {
+        border: 1px solid #007bff;
+        outline: none;
+      }
+    }
+
+    select {
+      color: #555; // Default color for select text
+
+      option[value="Pending"] {
+        color: #ff9800; // Orange color for Pending
+      }
+
+      option[value="In Progress"] {
+        color: #2196f3; // Blue color for In Progress
+      }
+
+      option[value="Completed"] {
+        color: #4caf50; // Green color for Completed
+      }
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+
+      &:hover {
+        background: #0056b3;
+      }
+
+      &:disabled {
+        background: #b0c4de;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Completed Tasks
+.todo.completed {
+  background-color: yellow; // Change background color to yellow when completed
+  color: $completed-text;
+
+  .todo-details h3,
+  .todo-details p {
+    color: $completed-text;
+  }
+}
+
+// Loader
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+// Add Task Form
+.add-task-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; // Align to the left
+  background: $background;
+  padding: 1rem;
+
+  section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1400px; // Equal width
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 1rem;
+        transition: border 0.3s ease-in-out;
+
+        &:focus {
+          border: 1px solid #007bff;
+          outline: none;
+        }
+      }
+
+      button {
+        background: #007bff;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+          background: #0056b3;
+        }
+
+        &:disabled {
+          background: #b0c4de;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .task-details {
+    margin-top: 2rem;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1400px;
+
+    h3 {
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+// Edit Task Form
+.edit-task-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; // Align to the left
+  background: $background;
+  padding: 1rem;
+
+  section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1400px; // Equal width
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 1rem;
+        transition: border 0.3s ease-in-out;
+
+        &:focus {
+          border: 1px solid #007bff;
+          outline: none;
+        }
+      }
+
+      button {
+        background: #007bff;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+          background: #0056b3;
+        }
+
+        &:disabled {
+          background: #b0c4de;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .todos-container {
+    padding: 0.5rem;
+  }
+  .todo {
+    flex-direction: column;
+  }
+}
